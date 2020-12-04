@@ -48,9 +48,9 @@ const searchByTitle = async (title) => {
 const searchById = async (id) => {
   const params = {"i": id};
   try {
-    const resp = await axios(MOVIE_DB_BASE_URL, { params: params, headers: details_headers})
-    const movieDetails = resp.data;
-    // const movieDetails = MOCK_SEARCH_DATA; // FIXME: remove once details done
+    // const resp = await axios(MOVIE_DB_BASE_URL, { params: params, headers: details_headers})
+    // const movieDetails = resp.data;
+    const movieDetails = MOCK_FILM_1; // FIXME: remove once details done
 
     if (!movieDetails) throw new NotFoundError();
 
@@ -105,7 +105,6 @@ const MOCK_SEARCH_DATA = {
 }
 
 const MOCK_FILM_1 = {
-  "resp": {
     "Title": "Spider-Man: Into the Spider-Verse",
       "Year": "2018",
         "Rated": "PG",
@@ -145,10 +144,8 @@ const MOCK_FILM_1 = {
                                                   "Website": "N/A",
                                                     "Response": "True"
   }
-}
 
 const MOCK_FILM_2 = {
-  "resp": {
     "Title": "Spider-Man: Into the Spider-Verse - The Ultimate Comics Cast",
       "Year": "2019",
         "Rated": "N/A",
@@ -180,4 +177,3 @@ const MOCK_FILM_2 = {
                                                   "Website": "N/A",
                                                     "Response": "True"
   }
-}
