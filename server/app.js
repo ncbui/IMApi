@@ -1,6 +1,8 @@
 const express = require("express");
-const app = express();
+const { searchByTitle, searchById } = require('./api.js')
 const { NotFoundError } = require("./expressError");
+
+const app = express();
 
 
 // parses JSON body => req.body object
@@ -11,15 +13,23 @@ app.use(express.urlencoded({ extended: true }));
 
 
 /** Handle Search */
-app.get("/search", function (req, res, next) {
+app.get("/search", async function (req, res, next) {
   try {
-    console.log(req.body.title)
-    const res = searchByTitle(req.body.title)
-    // const user = USERS.find(u => (
-    //   u.username === req.params.username
-    // ));
-    if (!res) throw new NotFoundError();
-    return res.json(req.body.title);
+    const resp = await searchByTitle(`${req.body.searchTerm}`)
+    // console.log(req.body.searchTerm, resp)
+    if (!resp) throw new NotFoundError();
+    return res.json(resp);
+  } catch (err) {
+    return next(err);
+  }
+});
+
+/** Show Movie Details */
+app.get("/details/:id", async function (req, res, next) {
+  try {
+    const resp = await searchById(`${req.params.id}`)
+    if (!resp) throw new NotFoundError();
+    return res.json(resp);
   } catch (err) {
     return next(err);
   }
