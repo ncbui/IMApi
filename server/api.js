@@ -104,8 +104,7 @@ const MOCK_SEARCH_DATA = {
   }
 }
 
-const MOCK_FILM = {
-"tt4633694" : {
+const MOCK_FILM_1 = {
   "resp": {
     "Title": "Spider-Man: Into the Spider-Verse",
       "Year": "2018",
@@ -146,8 +145,9 @@ const MOCK_FILM = {
                                                   "Website": "N/A",
                                                     "Response": "True"
   }
-},
-"tt10188824": {
+}
+
+const MOCK_FILM_2 = {
   "resp": {
     "Title": "Spider-Man: Into the Spider-Verse - The Ultimate Comics Cast",
       "Year": "2019",
@@ -180,5 +180,4 @@ const MOCK_FILM = {
                                                   "Website": "N/A",
                                                     "Response": "True"
   }
-}
 }
