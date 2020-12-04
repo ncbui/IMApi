@@ -9,14 +9,18 @@ This repository contains two separate applications: `client`, which is a Create 
 1. clone the repository
 2. `cd server`
 3. `npm install` to install dependencies
-4. `createdb movieAPI`
-5. `createdb movieAPI-test`
-// FIXME: seed db
-6. Create a `.env` file in the root of the server directory to contain different variables.
-7. `npm start`
+4. `createdb imapi`
+5. `createdb imapi-test`
+6. `psql < imapi.sql`
+7. Create a `.env` file in the root of the server
+    7a. Obtain an API key from https://rapidapi.com/collection/movie-apis
+    7b. Subscribe to the Movie Database API: https://rapidapi.com/rapidapi/api/movie-database-imdb-alternative
+8. `npm start`
 
 ### Run tests
 
+1. `cd server`
+2. `npm test`
 
 ## Getting started on the client
 
