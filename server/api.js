@@ -4,36 +4,32 @@ const axios = require('axios');
 const IMDB_API_KEY = process.env.IMDB_API_KEY;
 const IMDB_BASE_URL = 'https://imdb-internet-movie-database-unofficial.p.rapidapi.com'
 const IMDB_API_HOST = 'imdb-internet-movie-database-unofficial.p.rapidapi.com'
+const MOVIE_DB_BASE_URL = 'https://movie-database-imdb-alternative.p.rapidapi.com/'
+const MOVIE_DB_API_HOST = 'movie-database-imdb-alternative.p.rapidapi.com'
 
-const headers = {
+const search_headers = {
   'x-rapidapi-key': `${IMDB_API_KEY}`,
   'x-rapidapi-host': `${IMDB_API_HOST}`
 };
 
-/** FROM Rapid Api */
-// var options = {
-//   method: 'GET',
-//   url: 'https://imdb-internet-movie-database-unofficial.p.rapidapi.com/search/SpiderMan',
-//   headers: {
-//     'x-rapidapi-key': '',
-//     'x-rapidapi-host': 'imdb-internet-movie-database-unofficial.p.rapidapi.com'
-//   }
-// };
-
-// axios.request(options).then(function (response) {
-//   console.log(response.data);
-// }).catch(function (error) {
-//   console.error(error);
-// });
+const details_headers = {
+  'x-rapidapi-key': `${IMDB_API_KEY}`,
+  'x-rapidapi-host': `${MOVIE_DB_API_HOST}`,
+  "useQueryString": true
+}
 
 
+/** Searches IMDB for all matches by name
+ * 
+ * @param {*} title 
+ */
 const searchByTitle = async (title) => {
   title = title.replace(/\s/g,'%20');
   const URL = `${IMDB_BASE_URL}/search/${title}`;
 
   try {
     /** WORKING, SEE OUTPUT BELOW */
-    // const resp = await axios(URL, {headers})
+    // const resp = await axios(URL, {headers: search_headers})
     // const searchResults = resp.data;
 
     const searchResults = MOCK_SEARCH_DATA; // FIXME: remove once details done
@@ -41,6 +37,24 @@ const searchByTitle = async (title) => {
     if (!searchResults) throw new NotFoundError();
 
     return searchResults; // FIXME
+  } catch (err) {
+    console.log("Can't search for movie titles", { err });
+    return null;
+  }
+}
+
+/** Gets details from IMDB Alternative DB */
+
+const searchById = async (id) => {
+  const params = {"i": id};
+  try {
+    const resp = await axios(MOVIE_DB_BASE_URL, { params: params, headers: details_headers})
+    const movieDetails = resp.data;
+    // const movieDetails = MOCK_SEARCH_DATA; // FIXME: remove once details done
+
+    if (!movieDetails) throw new NotFoundError();
+
+    return movieDetails; // FIXME
   } catch (err) {
     console.log("Can't search for movie titles", { err });
     return null;
@@ -57,11 +71,6 @@ const MOCK_SEARCH_DATA = {
         "title": "Spider-Man: Into the Spider-Verse",
         "image": "https://m.media-amazon.com/images/M/MV5BMjMwNDkxMTgzOF5BMl5BanBnXkFtZTgwNTkwNTQ3NjM@.jpg",
         "id": "tt4633694"
-      },
-      {
-        "title": "Spider-Man: Into the Spider-Verse 2",
-        "image": "https://m.media-amazon.com/images/G/01/imdb/images/nopicture/32x44/film-3119741174._CB468665901_.png",
-        "id": "tt9362722"
       },
       {
         "title": "Spider-Man: Into the Spider-Verse - The Ultimate Comics Cast",
@@ -94,3 +103,5 @@ const MOCK_SEARCH_DATA = {
         "companies": []
   }
 }
+
+// const MOCK_FILM = 
