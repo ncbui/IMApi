@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { NotFoundError } = require("./expressError");
+const { NotFoundError, BadRequestError } = require("./expressError");
 
 const axios = require('axios');
 const IMDB_API_KEY = process.env.IMDB_API_KEY;
@@ -25,6 +25,8 @@ const details_headers = {
  * @param {*} title 
  */
 const searchByTitle = async (title) => {
+  if (!title) throw new BadRequestError("Can't search for movie without title");
+
   title = title.replace(/\s/g,'%20');
   const URL = `${IMDB_BASE_URL}/search/${title}`;
 
@@ -37,17 +39,20 @@ const searchByTitle = async (title) => {
 
     if (!searchResults) throw new NotFoundError();
 
-    return searchResults; // FIXME
+    return searchResults;
   } catch (err) {
-    console.log("Can't search for movie titles", { err });
+    console.log("Can't search for movie by title", { err });
     return null;
   }
 }
 
-/** Gets details from IMDB Alternative DB */
+/** Gets details from IMDB Alternative DB by IMDB id*/
 
 const searchById = async (id) => {
+  if (!id) throw new BadRequestError("Can't find details for movie without id", 400);
+
   const params = {"i": id};
+
   try {
     // const resp = await axios(MOVIE_DB_BASE_URL, { params: params, headers: details_headers})
     // const allDetails = resp.data;
@@ -64,10 +69,9 @@ const searchById = async (id) => {
       // FIXME: add thumbs
     }
 
-
-    return tinyDetails; // FIXME
+    return tinyDetails;
   } catch (err) {
-    console.log("Can't search for movie titles", { err });
+    console.log("Can't search for movie by id", { err });
     return null;
   }
 }
