@@ -27,9 +27,8 @@ const headers = {
 // });
 
 
-const searchByTitle = async (title, next) => {
-  title = title.replaceAll(" ","%20");
-  console.log("title after replacing", title)
+const searchByTitle = async (title) => {
+  title = title.replace(/\s/g,'%20');
   const URL = `${IMDB_BASE_URL}/search/${title}`;
 
   try {
@@ -37,12 +36,11 @@ const searchByTitle = async (title, next) => {
     // const resp = await axios(URL, {headers})
     // const searchResults = resp.data;
 
-    const searchResults = MOCK_DATA; // FIXME: remove once details done
+    const searchResults = MOCK_SEARCH_DATA; // FIXME: remove once details done
 
     if (!searchResults) throw new NotFoundError();
 
     return searchResults; // FIXME
-    // return title;
   } catch (err) {
     console.log("Can't search for movie titles", { err });
     return null;
@@ -52,7 +50,7 @@ const searchByTitle = async (title, next) => {
 module.exports = { searchByTitle }
 
 
-const MOCK_DATA = {
+const MOCK_SEARCH_DATA = {
   "title": {
     "titles": [
       {
