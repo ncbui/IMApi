@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { NotFoundError } = require("./expressError");
 
 const axios = require('axios');
 const IMDB_API_KEY = process.env.IMDB_API_KEY;
@@ -49,12 +50,22 @@ const searchById = async (id) => {
   const params = {"i": id};
   try {
     // const resp = await axios(MOVIE_DB_BASE_URL, { params: params, headers: details_headers})
-    // const movieDetails = resp.data;
-    const movieDetails = MOCK_FILM_1; // FIXME: remove once details done
+    // const allDetails = resp.data;
+    const allDetails = MOCK_FILM_1; // FIXME: remove once details done
 
-    if (!movieDetails) throw new NotFoundError();
+    if (!allDetails) throw new NotFoundError();
 
-    return movieDetails; // FIXME
+    const tinyDetails = {
+      "title": allDetails["Title"],
+      "director": allDetails["Director"],
+      "released": allDetails["Released"],
+      "description": allDetails["Plot"],
+      "imdbId": allDetails["imdbID"],
+      // FIXME: add thumbs
+    }
+
+
+    return tinyDetails; // FIXME
   } catch (err) {
     console.log("Can't search for movie titles", { err });
     return null;
@@ -105,75 +116,75 @@ const MOCK_SEARCH_DATA = {
 }
 
 const MOCK_FILM_1 = {
-    "Title": "Spider-Man: Into the Spider-Verse",
-      "Year": "2018",
-        "Rated": "PG",
-          "Released": "14 Dec 2018",
-            "Runtime": "117 min",
-              "Genre": "Animation, Action, Adventure, Family, Sci-Fi",
-                "Director": "Bob Persichetti, Peter Ramsey, Rodney Rothman",
-                  "Writer": "Phil Lord (screenplay by), Rodney Rothman (screenplay by), Phil Lord (story by)",
-                    "Actors": "Shameik Moore, Jake Johnson, Hailee Steinfeld, Mahershala Ali",
-                      "Plot": "Teen Miles Morales becomes the Spider-Man of his universe, and must join with five spider-powered individuals from other dimensions to stop a threat for all realities.",
-                        "Language": "English, Spanish",
-                          "Country": "USA",
-                            "Awards": "Won 1 Oscar. Another 79 wins & 55 nominations.",
-                              "Poster": "https://m.media-amazon.com/images/M/MV5BMjMwNDkxMTgzOF5BMl5BanBnXkFtZTgwNTkwNTQ3NjM@._V1_SX300.jpg",
-                                "Ratings": [
-                                  {
-                                    "Source": "Internet Movie Database",
-                                    "Value": "8.4/10"
-                                  },
-                                  {
-                                    "Source": "Rotten Tomatoes",
-                                    "Value": "97%"
-                                  },
-                                  {
-                                    "Source": "Metacritic",
-                                    "Value": "87/100"
-                                  }
-                                ],
-                                  "Metascore": "87",
-                                    "imdbRating": "8.4",
-                                      "imdbVotes": "352,930",
-                                        "imdbID": "tt4633694",
-                                          "Type": "movie",
-                                            "DVD": "N/A",
-                                              "BoxOffice": "N/A",
-                                                "Production": "Sony Pictures Animation, Avi Arad, Pascal Pictures, Lord Miller",
-                                                  "Website": "N/A",
-                                                    "Response": "True"
-  }
+  "Title": "Spider-Man: Into the Spider-Verse",
+  "Year": "2018",
+  "Rated": "PG",
+  "Released": "14 Dec 2018",
+  "Runtime": "117 min",
+  "Genre": "Animation, Action, Adventure, Family, Sci-Fi",
+  "Director": "Bob Persichetti, Peter Ramsey, Rodney Rothman",
+  "Writer": "Phil Lord (screenplay by), Rodney Rothman (screenplay by), Phil Lord (story by)",
+  "Actors": "Shameik Moore, Jake Johnson, Hailee Steinfeld, Mahershala Ali",
+  "Plot": "Teen Miles Morales becomes the Spider-Man of his universe, and must join with five spider-powered individuals from other dimensions to stop a threat for all realities.",
+  "Language": "English, Spanish",
+  "Country": "USA",
+  "Awards": "Won 1 Oscar. Another 79 wins & 55 nominations.",
+  "Poster": "https://m.media-amazon.com/images/M/MV5BMjMwNDkxMTgzOF5BMl5BanBnXkFtZTgwNTkwNTQ3NjM@._V1_SX300.jpg",
+  "Ratings": [
+    {
+      "Source": "Internet Movie Database",
+      "Value": "8.4/10"
+    },
+    {
+      "Source": "Rotten Tomatoes",
+      "Value": "97%"
+    },
+    {
+      "Source": "Metacritic",
+      "Value": "87/100"
+    }
+  ],
+  "Metascore": "87",
+  "imdbRating": "8.4",
+  "imdbVotes": "352,930",
+  "imdbID": "tt4633694",
+  "Type": "movie",
+  "DVD": "N/A",
+  "BoxOffice": "N/A",
+  "Production": "Sony Pictures Animation, Avi Arad, Pascal Pictures, Lord Miller",
+  "Website": "N/A",
+  "Response": "True"
+}
 
 const MOCK_FILM_2 = {
-    "Title": "Spider-Man: Into the Spider-Verse - The Ultimate Comics Cast",
-      "Year": "2019",
-        "Rated": "N/A",
-          "Released": "19 Mar 2019",
-            "Runtime": "15 min",
-              "Genre": "Documentary, Short",
-                "Director": "N/A",
-                  "Writer": "N/A",
-                    "Actors": "Mahershala Ali, Nicolas Cage, Kimiko Glenn, Kathryn Hahn",
-                      "Plot": "N/A",
-                        "Language": "English",
-                          "Country": "USA",
-                            "Awards": "N/A",
-                              "Poster": "https://m.media-amazon.com/images/M/MV5BODM1YTA4ZGQtMjZiMi00NzY0LTk3ODAtN2ZlNjk2NTUxN2U5XkEyXkFqcGdeQXVyODE2NDgwMzM@._V1_SX300.jpg",
-                                "Ratings": [
-                                  {
-                                    "Source": "Internet Movie Database",
-                                    "Value": "7.3/10"
-                                  }
-                                ],
-                                  "Metascore": "N/A",
-                                    "imdbRating": "7.3",
-                                      "imdbVotes": "19",
-                                        "imdbID": "tt10188824",
-                                          "Type": "movie",
-                                            "DVD": "N/A",
-                                              "BoxOffice": "N/A",
-                                                "Production": "N/A",
-                                                  "Website": "N/A",
-                                                    "Response": "True"
-  }
+  "Title": "Spider-Man: Into the Spider-Verse - The Ultimate Comics Cast",
+  "Year": "2019",
+  "Rated": "N/A",
+  "Released": "19 Mar 2019",
+  "Runtime": "15 min",
+  "Genre": "Documentary, Short",
+  "Director": "N/A",
+  "Writer": "N/A",
+  "Actors": "Mahershala Ali, Nicolas Cage, Kimiko Glenn, Kathryn Hahn",
+  "Plot": "N/A",
+  "Language": "English",
+  "Country": "USA",
+  "Awards": "N/A",
+  "Poster": "https://m.media-amazon.com/images/M/MV5BODM1YTA4ZGQtMjZiMi00NzY0LTk3ODAtN2ZlNjk2NTUxN2U5XkEyXkFqcGdeQXVyODE2NDgwMzM@._V1_SX300.jpg",
+  "Ratings": [
+    {
+      "Source": "Internet Movie Database",
+      "Value": "7.3/10"
+    }
+  ],
+  "Metascore": "N/A",
+  "imdbRating": "7.3",
+  "imdbVotes": "19",
+  "imdbID": "tt10188824",
+  "Type": "movie",
+  "DVD": "N/A",
+  "BoxOffice": "N/A",
+  "Production": "N/A",
+  "Website": "N/A",
+  "Response": "True"
+}
