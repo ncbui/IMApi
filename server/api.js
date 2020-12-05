@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { NotFoundError, BadRequestError } = require("./expressError");
+const Movie = require('./models/Movie');
 
 const axios = require('axios');
 const IMDB_API_KEY = process.env.IMDB_API_KEY;
@@ -60,13 +61,18 @@ const searchById = async (id) => {
 
     if (!allDetails) throw new NotFoundError();
 
+    // given data returned from API call
+    // get votes for it
+    const votes = await Movie.get(allDetails["imdbID"]);
+
     const tinyDetails = {
+      "imdbID": allDetails["imdbID"],
       "title": allDetails["Title"],
       "director": allDetails["Director"],
       "released": allDetails["Released"],
       "description": allDetails["Plot"],
-      "imdbId": allDetails["imdbID"],
-      // FIXME: add thumbs
+      "thumbs_up": votes["thumbs_up"],
+      "thumbs_down": votes["thumbs_down"],
     }
 
     return tinyDetails;
