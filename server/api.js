@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { NotFoundError, BadRequestError } = require("./expressError");
-const Movie = require('./models/Movie');
+const Votes = require('./models/Votes');
 
 const axios = require('axios');
 const IMDB_API_KEY = process.env.IMDB_API_KEY;
@@ -47,7 +47,7 @@ const searchByTitle = async (title) => {
   }
 }
 
-/** Gets details from IMDB Alternative DB by IMDB id*/
+/** Gets details from Move Database (IMDB Alternative) by imdbID*/
 
 const searchById = async (id) => {
   if (!id) throw new BadRequestError("Can't find details for movie without id", 400);
@@ -63,7 +63,7 @@ const searchById = async (id) => {
 
     // given data returned from API call
     // get votes for it
-    const votes = await Movie.get(allDetails["imdbID"]);
+    const votes = await Votes.get(allDetails[id]);
 
     const tinyDetails = {
       "imdbID": allDetails["imdbID"],
