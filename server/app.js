@@ -1,9 +1,9 @@
 const express = require("express");
 const { searchByTitle, searchById } = require('./api.js')
 const { NotFoundError } = require("./expressError");
+const Movie = require("./models/Votes.js");
 
 const app = express();
-
 
 // parses JSON body => req.body object
 app.use(express.json());
@@ -12,32 +12,52 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-/** Handle Search */
+/** Search for Movies by Title*/
 app.get("/search", async function (req, res, next) {
   try {
     const resp = await searchByTitle(`${req.body.searchTerm}`)
-    // console.log(req.body.searchTerm, resp)
+
     if (!resp) throw new NotFoundError();
+
     return res.json(resp);
   } catch (err) {
     return next(err);
   }
 });
 
-/** Show Movie Details */
+/** Show Movie details by imdbID */
 app.get("/details/:id", async function (req, res, next) {
   try {
     const resp = await searchById(`${req.params.id}`)
+
     if (!resp) throw new NotFoundError();
+
     return res.json(resp);
   } catch (err) {
     return next(err);
   }
 });
+
+// /** Vote for Movie details by imdbID */
+// app.get("/vote", async function (req, res, next) {
+//   const imdbID = `${req.body.id}`;
+//   const voteType = `${req.body.voteType}`;
+
+//   try {
+//     // const resp = await searchById(`${req.body.id}`)
+
+//     // if (!resp) throw new NotFoundError();
+
+//     return res.json(resp);
+//   } catch (err) {
+//     return next(err);
+//   }
+// });
 
 /** Handle 404 errors */
 app.use(function (req, res, next) {
   const notFoundError = new NotFoundError();
+  
   return next(notFoundError);
 });
 
